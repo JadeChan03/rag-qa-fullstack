@@ -34,7 +34,7 @@ async def ask_question(question: Question):
     # return the answer as a JSON response
     return {"answer": answer}
 
-# Root endpoint
+# root endpoint
 @app.get("/")
 async def root():
-    return {"message": "This is the RAG QA Bot (fullstack) backend."}
+    return {"message": "This is the RAG QA backend."}
