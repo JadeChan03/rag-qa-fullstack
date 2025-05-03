@@ -1,0 +1,32 @@
+**Project Summary: Project Phoenix - Customer Portal Upgrade**
+
+**1. Project Goal:**
+To redesign and migrate the existing customer support portal to a new technology stack, improving user experience, performance, and maintainability.
+
+**2. Scope:**
+* Redesign UI/UX based on user feedback and modern design principles.
+* Migrate backend services from legacy system 'SupportSys' to microservices architecture.
+* Implement new features: Integrated knowledge base search, real-time chat support (Phase 1), ticket status tracking improvements.
+* Integrate with existing CRM (Salesforce).
+* Ensure WCAG 2.1 AA accessibility compliance.
+
+**3. Timeline:**
+* Phase 1 (Design & Core Backend): Completed Q1 2025.
+* Phase 2 (Frontend Dev & Integration): Ongoing, Target Completion June 30, 2025.
+* Phase 3 (Testing & Deployment): Target July 2025.
+* Project Go-Live: Target August 1, 2025.
+
+**4. Key Stakeholders:**
+* Project Sponsor: Jane Doe (VP, Customer Success)
+* Project Manager: John Smith
+* Tech Lead: Alice Green
+* Primary Users: Customer Support Team, End Customers.
+
+**5. Current Status (As of April 20, 2025):**
+Phase 2 is approximately 70% complete. Frontend development is on track. Integration with Salesforce is facing minor delays due to API limitations; mitigation plan in progress. Real-time chat feature development started.
+
+**6. Risks:**
+* Potential delay in Salesforce integration impacting Phase 3 start.
+* Resource constraints if key developers are pulled to other urgent tasks.
+
+**Next Update Due:** May 5, 2025

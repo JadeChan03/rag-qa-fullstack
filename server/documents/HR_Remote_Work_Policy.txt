@@ -1,0 +1,18 @@
+**Subject: Updated Remote Work Policy - Effective August 1, 2024**
+
+**1. Eligibility:**
+Full-time employees with manager approval and a role suitable for remote work are eligible. Eligibility requires a minimum of 6 months tenure with the company and consistent performance meeting expectations. Contractors and interns are generally not eligible unless specified in their contract.
+
+**2. Work Hours:**
+Standard work hours remain 10:00 AM to 7:00 PM in the employee's local time zone, including a one-hour unpaid lunch break. Flexible arrangements may be approved by managers but must ensure adequate overlap with core team hours (10:00 AM - 3:00 PM Company HQ time). All work hours must be accurately logged.
+
+**3. Equipment:**
+The company will provide a standard laptop and peripherals (monitor, keyboard, mouse). Employees are responsible for providing a reliable internet connection and a dedicated, safe workspace. Use of personal devices for company work must be approved by IT and adhere to security protocols.
+
+**4. Communication:**
+Remote employees are expected to be reachable via company-approved communication channels (Slack, Email, Video Conferencing) during work hours. Regular check-ins with managers and teams are mandatory.
+
+**5. Security:**
+All remote work must comply with the company's data security and confidentiality policies. Use of VPN is required when accessing internal systems. Sensitive documents should not be stored on personal devices or cloud storage without encryption and IT approval.
+
+**Policy Review Date:** July 15, 2025
