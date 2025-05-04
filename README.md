@@ -50,11 +50,14 @@ This project implements a **Retrieval-Augmented Generation (RAG)** pipeline to a
 ---
 
 ### Tools/Libraries:
+**Backend**
 - **FastAPI**: For building a lightweight, high-performance backend API.
+- **Pydantic**: Used as part of FastAPI for data validation and serialization.
 - **Uvicorn**: ASGI server for running the FastAPI backend.
 - **Sentence Transformers**: For generating high-quality document embeddings.
 - **Hugging Face Transformers**: For leveraging the `google/flan-t5-large` model to generate answers.
 - **Python**: Core programming language for backend development.
+**Frontend**
 - **Node.js**: For managing frontend dependencies and running the development server.
 - **React (Vite/TypeScript)**: For building a fast, interactive and type-safe frontend.
 - **Material-UI (MUI)**: For creating a consistent and responsive frontend design.
