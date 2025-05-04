@@ -132,13 +132,15 @@ This project implements a **Retrieval-Augmented Generation (RAG)** pipeline to a
 
 ## How to Use
 
-1. **Start the Backend**:
+1. **Activate your Virtual Environment and Select the Correct Python Interpreter**
+   - Ensure the correct virtual environment (`source venv/bin/activate` or `.\venv\Scripts\activate`) and Python Interpreter are selected. 
+3. **Start the Backend**:
    - Ensure the backend server is running (`uvicorn app:app --reload`).
 
-2. **Start the Frontend**:
+4. **Start the Frontend**:
    - Ensure the frontend is running ('`npm run dev`). Open your browser and visit `http://localhost:5173`.
 
-3. **Ask a Question**:
+5. **Ask a Question**:
    - Type your question into the input field and click "Submit."
    - The system will process the query and retrieve an answer from the documents.
 
