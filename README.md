@@ -64,7 +64,7 @@ We implemented a **RAG-based QA system** that combines **document retrieval** an
    uvicorn app:app --reload
    ```
 
-- Access the backend at `http://127.0.0.1:8000`.
+- Access the backend at `http://127.0.0.1:8000` or `http://127.0.0.1:8000/docs`.
 
 ### Frontend Setup
 1. **Navigate to the Client Directory**:
@@ -113,8 +113,8 @@ We implemented a **RAG-based QA system** that combines **document retrieval** an
 3. **Answer Quality**:
    - The quality of the generated answers depends on the relevance of the retrieved documents and the language model's capabilities.
 
-4. **Frontend Design**:
-   - The frontend is minimal and may require additional enhancements for production use.
+4. **Optimization for Response Time**:
+   - Currently the system is operating at a relatively inefficient speed, possible due to LLM Response Time and pipeline inefficiency. 
 
 ### Next Steps
 1. **Scalability**:
@@ -129,5 +129,5 @@ We implemented a **RAG-based QA system** that combines **document retrieval** an
 4. **Authentication & Authorization**:
    - Add user authentication to restrict access and provide personalized results.
 
-5. **Deployment**:
-   - Package the backend and frontend for deployment on platforms like **AWS**, **Azure**, or **Vercel**.
+5. **Improving Response Time**:
+   - Utilize caching responses, further batching LLM requests, and asynchronous processing to improve pipeline efficiency.

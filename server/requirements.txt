@@ -1,4 +1,10 @@
-transformers 
-sentence-transformers 
-fastapi 
-uvicorn
+# FastAPI framework
+fastapi==0.95.2
+pydantic==1.10.7 
+uvicorn==0.21.1 
+# semantic search functionality
+sentence-transformers==2.2.2
+# supports the Hugging Face Transformers library for text-to-text generation
+transformers==4.28.1 
+# dependency for both Sentence Transformers and Hugging Face Transformers
+torch==2.0.0 
