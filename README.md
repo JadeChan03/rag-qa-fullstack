@@ -76,7 +76,24 @@ This project implements a **Retrieval-Augmented Generation (RAG)** pipeline to a
    cd rag-qa-fullstack/server 
    ```
 
-3. **Create and Activate the Virtual Environment**    
+3. **Set the Python Version Using pyenv**  
+   If you use `pyenv` to manage Python versions, you can set the local Python version for the project.
+
+   1. In the `/server` directory, set the local Python version:
+      ```bash
+      pyenv local 3.10.0
+      ```
+
+   2. Verify the Python version:
+      ```bash
+      pyenv version
+      ```
+
+   Ensure the output matches the required version (e.g., `3.10.0`).
+
+   If you don’t have `pyenv` installed, you can follow the [pyenv installation guide](https://github.com/pyenv/pyenv#installation).
+
+4. **Create and Activate the Virtual Environment**    
    To isolate dependencies and avoid conflicts, create a virtual environment.
    
    ***On macOS/Linux:***
@@ -90,19 +107,19 @@ This project implements a **Retrieval-Augmented Generation (RAG)** pipeline to a
    .\venv\Scripts\activate
    ```
 
-3. **Install Dependencies**
+5. **Install Dependencies**
    Once the virtual environment is activated, install the required dependencies:
    ```bash
    pip install -r requirements.txt
    ```
 
-4. **Select the Correct Python Interpreter in Visual Studio Code** 
+6. **Select the Correct Python Interpreter in Visual Studio Code** 
    To avoid dependency import errors, ensure that VS Code is using the correct Python interpreter:
    - Press `Cmd+Shift+P` (macOS) or `Ctrl+Shift+P` (Windows/Linux).
    - Search for and select **Python: Select Interpreter**.
    - Choose the interpreter located in the `venv` folder. For example, `server/venv/bin/python` or `server/venv/Scripts/python.exe`.
 
-5. **Start the Backend Server**
+7. **Start the Backend Server**
    ```bash
    uvicorn app:app --reload
    ```
