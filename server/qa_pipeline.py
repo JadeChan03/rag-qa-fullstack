@@ -1,87 +1,78 @@
 from sentence_transformers import SentenceTransformer, util
 from transformers import pipeline
 import os
+import nltk
+from nltk.corpus import stopwords
 
-# Load SentenceTransformer for embeddings
+# ensure stopwords are downloaded
+nltk.download('stopwords')
+stop_words = set(stopwords.words('english'))
+
+# load models
 model = SentenceTransformer('all-MiniLM-L6-v2')
-
-# Load Hugging Face's pipeline for large language model (LLM) inference
 qa_model = pipeline("text2text-generation", model="google/flan-t5-large")
 
-# Load and embed documents
+# 1. dataing indexing: load text documents from a directory
 def load_documents(directory):
     """
-    Load documents from a directory.
+    load text documents from a directory.
     """
-    documents = {}
-    for filename in os.listdir(directory):
-        if filename.endswith(".txt"):
-            with open(os.path.join(directory, filename), 'r', encoding='utf-8') as file:
-                documents[filename] = file.read()
-    return documents
+    return {
+        filename: open(os.path.join(directory, filename), 'r', encoding='utf-8').read()
+        for filename in os.listdir(directory) if filename.endswith(".txt")
+    }
 
+# 2. vector database (not implemented in this simplified version)
+# implemented step: dataing embedding: generate embeddings for documents
 def embed_documents(documents):
     """
-    Generate embeddings for documents.
+    generate embeddings for documents.
     """
     return {filename: model.encode(content, convert_to_tensor=True) for filename, content in documents.items()}
 
-# Find the most relevant documents and generate a synthesized answer using an LLM
-def find_answer(query, documents, doc_embeddings, top_n=3, max_tokens=450, similarity_threshold=0.3):
+# 3. llm: retrieve the most relevant documents to provide to llm for answer generation
+def find_answer(query, documents, doc_embeddings, top_n=3, max_tokens=450, similarity_threshold=0.3, keyword_boost=0.5):
     """
-    Retrieve the top N most relevant documents based on cosine similarity to the query,
-    truncate or chunk the context to fit within the token limit,
-    and use an LLM to generate a synthesized and comprehensive answer.
+    retrieve the most relevant documents and generate an answer using an llm.
     """
-    # Encode the user's query into a vector
+    # encode query and extract keywords
     query_embedding = model.encode(query, convert_to_tensor=True)
+    keywords = set(word for word in query.lower().split() if word not in stop_words)
 
-    # Compute similarity scores between the query and each document
+    # compute document scores and apply keyword boost
     scores = {
-        filename: util.pytorch_cos_sim(query_embedding, embedding).item()
+        filename: util.pytorch_cos_sim(query_embedding, embedding).item() +
+                  (keyword_boost if any(keyword in documents[filename].lower() for keyword in keywords) else 0)
         for filename, embedding in doc_embeddings.items()
     }
 
-    # Sort the documents by similarity scores (descending) and select the top N
+    # retrieve top n documents
     top_matches = sorted(scores.items(), key=lambda item: item[1], reverse=True)[:top_n]
 
-    # Check if the highest similarity score exceeds the threshold
     if not top_matches or max(score for _, score in top_matches) < similarity_threshold:
-        return {
-            "answer": "I'm sorry, but your question doesn't seem to be related to the available context. "
-                      "Please ask a question relevant to the enterprise content.",
-            "source": [],
-            "confidence": 0.0
+        return {"answer": "No relevant information found.", "source": [], "confidence": 0.0}
+
+    # extract relevant sentences from top documents
+    combined_context = ""
+    current_length = 0
+    for filename, _ in top_matches:
+        sentences = documents[filename].split('. ')
+        sentence_scores = {
+            sentence: util.pytorch_cos_sim(query_embedding, model.encode(sentence, convert_to_tensor=True)).item() +
+                      (keyword_boost if any(keyword in sentence.lower() for keyword in keywords) else 0)
+            for sentence in sentences
         }
+        sorted_sentences = sorted(sentence_scores.items(), key=lambda item: item[1], reverse=True)
+        for sentence, score in sorted_sentences:
+            if score >= similarity_threshold and current_length + len(sentence) <= max_tokens:
+                combined_context += f"{sentence}. "
+                current_length += len(sentence)
 
-    # Combine the content of the top N documents
-    combined_context = "\n\n".join(
-        f"(Source: {filename})\n{documents[filename]}" for filename, _ in top_matches
-    )
-
-    # Truncate the context to fit within the token limit
-    truncated_context = combined_context[:max_tokens]
-
-    # Use the LLM to generate a comprehensive answer
-    llm_input = (
-        f"Question: {query}\n"
-        f"Context: {truncated_context}\n\n"
-        f"Please provide a detailed and comprehensive answer to the question based on the context. "
-        f"Include all relevant details and examples mentioned in the context. "
-        f"If the question is not related to the context, state that you only have access to enterprise information. "
-        f"If you do not know the answer, state that you do not know. Keep the answer within 800 characters."
-    )
+    # 4. prompt engineering: construct the input prompt and generate an answer
+    llm_input = f"Question: {query}\nContext: {combined_context}\n\nProvide a detailed answer based on the context."
     llm_output = qa_model(llm_input, max_length=800, num_return_sequences=1)[0]['generated_text']
 
-    # Ensure the output is within 800 characters
-    detailed_answer = llm_output[:800]
-
-    # Return the answer, sources, and average confidence score
+    # return the answer, sources, and confidence
     sources = [filename for filename, _ in top_matches]
     average_confidence = sum(score for _, score in top_matches) / len(top_matches)
-
-    return {
-        "answer": detailed_answer,
-        "source": sources,
-        "confidence": average_confidence
-    }
+    return {"answer": llm_output[:800], "source": sources, "confidence": average_confidence}

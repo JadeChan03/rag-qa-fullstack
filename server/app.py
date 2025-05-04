@@ -3,45 +3,46 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from qa_pipeline import load_documents, embed_documents, find_answer
 
-# Initialize FastAPI app
 app = FastAPI()
 
-# Enable CORS for frontend-backend communication
+
+# enable CORS for frontend-backend communication
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Replace "*" with specific frontend URLs in production
+    allow_origins=["*"], 
     allow_credentials=True,
-    allow_methods=["*"],  # Allow all HTTP methods (GET, POST, etc.)
-    allow_headers=["*"],  # Allow all headers
+    allow_methods=["*"],  
+    allow_headers=["*"],  
 )
 
-# Load and embed documents on startup
-# This avoids reloading and embedding the documents on every request
-documents = load_documents("documents")  # Load all .txt files from the 'documents/' directory
-doc_embeddings = embed_documents(documents)  # Generate embeddings for all documents
+# load and embed documents on startup
+# this avoids reloading and embedding the documents on every request
+documents = load_documents("documents") 
+doc_embeddings = embed_documents(documents)  
 
-# Define the data model for API requests
+# define the data model for API requests
 class Question(BaseModel):
-    query: str  # The user-provided question in natural language
+    query: str  
 
-# API endpoint: Handles user questions and returns answer, source, and confidence score
+# API endpoint: handles user questions and returns answer, source, and confidence score
 @app.post("/ask")
 async def ask_question(question: Question):
     """
     Handles user queries, retrieves the most relevant document,
     and generates a conversational answer with source citation and confidence score.
     """
-    # Use find_answer function to get the structured response
-    result = find_answer(question.query, documents, doc_embeddings)
+    # use find_answer function to get the structured response
+    result = find_answer(question.query, documents, doc_embeddings, top_n=2)
 
-    # Return the structured response as a JSON object
+    # return the structured response as a JSON object
     return {
-        "answer": result["answer"],        # Conversational answer
-        "source": result["source"],        # Source document name
-        "confidence": result["confidence"] # Confidence score
+        "answer": result["answer"],        
+        "source": result["source"],       
+        "confidence": result["confidence"]
     }
 
-# Root endpoint
+# root endpoint
 @app.get("/")
 async def root():
     return {"message": "This is the RAG QA backend."}
+

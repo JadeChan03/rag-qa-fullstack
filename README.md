@@ -176,36 +176,53 @@ Document: HR_Remote_Work_Policy.txt
 
 1. "Who is eligible for remote work under the updated policy?"
 2. "What are the standard work hours for remote employees, and are flexible arrangements allowed?"
-3. "What security measures must remote employees follow when accessing internal systems?"
 
 Document: Internal_Announcement_Q3Goals.txt
 
-1. "What are the key initiatives planned to enhance customer retention in Q3 2025?"
-2. "When is Project Phoenix (Customer Portal Upgrade) scheduled to launch?"
-3. "What is the deadline for completing mandatory cybersecurity training for all staff?"
+1. "When is Project Phoenix (Customer Portal Upgrade) scheduled to launch?"
+2. "What is the deadline for completing cybersecurity training for all staff?"
 
 Document: Product_Spec.txt
 
 1. "What new features are introduced in Widget Alpha v2.1?"
 2. "What is the average processing latency and throughput capacity of Widget Alpha v2.1?"
-3. "What are the minimum system requirements to run Widget Alpha v2.1?"
 
 Document: Project_Summary.txt
 
 1. "What is the primary goal of Project Phoenix?"
-2. "When is the Project Phoenix go-live date scheduled?"
-3. "What are the identified risks that could impact the completion of Project Phoenix?"
+2. "What are the identified risks that could impact the completion of Project Phoenix?"
+
+***Known Errors Due to Wording***
+Some questions provide inaccurate or incomplete response due to wording. To improve accuracy, simplifying questions and/or rewording them into direct requests may help.
+
+- "Who is working on Project Phoenix?"
+Answer: John Smith * Tech Lead: Alice Green
+- "Name everyone on Project Phoenix"
+Answer: "Jane Doe (VP, Customer Success) * Project Manager: John Smith * Tech Lead: Alice Green * Primary Users: Customer Support Team, End Customers"
+
+- "What are the remote work policy?"
+Answer: All remote work must comply with the company's data security and confidentiality policies
+- "Summarise the remote work policy"
+Answer: **1. Security:** All remote work must comply with the company's data security and confidentiality policies. Eligibility:** Full-time employees with manager approval and a role suitable for remote work are eligible. Communication:** Remote employees are expected to be reachable via company-approved communication channels (Slack, Email, Video Conferencing) during work hours.
+
+- "What is the deadline for completing mandatory cybersecurity training for all staff?"
+Answer: August 1, 2024 (Incorrect)
+- "What is the deadline for completing cybersecurity training for all staff?"
+Answer: September 30th (Correct)
+
+- "What are the key initiatives planned to enhance customer retention in Q3 2025?"
+Answer: Let's work together to make Q3 a successful quarter (Irrelevant)
+- "How will customer retention be improved?"
+Answer: Reduce average support ticket resolution time by 15% (Better but still incomplete)
 
 ---
 
-## Future Improvements
+## Future Improvements (on RAG system)
 1. **Scalability**:
    - Implement a vector database like **Pinecone**, **Weaviate**, or **FAISS** for storing document embeddings.
 2. **Support for More Document Types**:
    - Add preprocessing pipelines to handle PDFs, Word documents, and other formats.
 3. **Improved Answer Generation**:
    - Fine-tune a language model for domain-specific queries to improve accuracy and relevance.
-4. **Authentication & Authorization**:
-   - Add user authentication to restrict access and provide personalized results.
-5. **Improving Response Time**:
+4. **Improving Response Time**:
    - Utilize caching responses, further batching LLM requests, and asynchronous processing to improve pipeline efficiency.

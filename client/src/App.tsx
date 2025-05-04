@@ -6,30 +6,45 @@ import {
   Container,
   CircularProgress,
   Box,
+  Paper,
+  createTheme,
+  ThemeProvider,
 } from '@mui/material';
 
-// Define the structure for the response
+// define the structure for the response
 interface AnswerResponse {
   answer: string;
   source: string[];
   confidence: number;
 }
 
-const App: React.FC = () => {
-  const [question, setQuestion] = useState<string>(''); // User's question
-  const [answer, setAnswer] = useState<string | null>(null); // Retrieved answer
-  const [sources, setSources] = useState<string[] | null>(null); // Source documents
-  const [confidence, setConfidence] = useState<number | null>(null); // Confidence score
-  const [loading, setLoading] = useState<boolean>(false); // Loading state
-  const [error, setError] = useState<string | null>(null); // Error state
+// create a custom theme with teal colors
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#008080',
+    },
+    secondary: {
+      main: '#005757',
+    },
+  },
+});
 
-  // Function to handle form submission
+const App: React.FC = () => {
+  const [question, setQuestion] = useState<string>(''); // user's question
+  const [answer, setAnswer] = useState<string | null>(null); // retrieved answer
+  const [sources, setSources] = useState<string[] | null>(null); // source documents
+  const [confidence, setConfidence] = useState<number | null>(null); // confidence score
+  const [loading, setLoading] = useState<boolean>(false); // loading state
+  const [error, setError] = useState<string | null>(null); // error state
+
+  // function to handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
     try {
-      // Make a POST request to the backend
+      // make a post request to the backend
       const response = await fetch('http://127.0.0.1:8000/ask', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -37,95 +52,127 @@ const App: React.FC = () => {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to fetch answer from the server.');
+        throw new Error('failed to fetch answer from the server.');
       }
 
       const data: AnswerResponse = await response.json();
-      setAnswer(data.answer); // Set the answer
-      setSources(data.source); // Set the sources
-      setConfidence(data.confidence); // Set the confidence score
+      setAnswer(data.answer); // set the answer
+      setSources(data.source); // set the sources
+      setConfidence(data.confidence); // set the confidence score
     } catch (err) {
-      setError((err as Error).message); // Set error message
+      setError((err as Error).message); // set error message
     } finally {
-      setLoading(false); // Reset loading state
+      setLoading(false); // reset loading state
     }
   };
 
   return (
-    <Container maxWidth="sm" style={{ marginTop: '2rem', textAlign: 'center' }}>
-      <Typography variant="h4" gutterBottom>
-        Internal Q&A System
-      </Typography>
-
-      <Typography color="error" variant="body1" style={{ marginTop: '1rem' }}>
-          Please ask specific enterprise-related questions for improved accuracy. The search engine refers to existing documents in the company database and works best when precise details are included.  
-        </Typography>
-
-      <form onSubmit={handleSubmit}>
-        <TextField
-          label="Ask a question"
-          variant="outlined"
-          fullWidth
-          value={question}
-          onChange={(e) => setQuestion(e.target.value)}
-          margin="normal"
-        />
-        <Button
-          type="submit"
-          variant="contained"
-          color="primary"
-          fullWidth
-          disabled={loading}
-          style={{ marginTop: '1rem' }}
-        >
-          {loading ? <CircularProgress size={24} color="inherit" /> : 'Submit'}
-        </Button>
-      </form>
-
-      {error && (
-        <Typography color="error" variant="body1" style={{ marginTop: '1rem' }}>
-          Error: {error}
-        </Typography>
-      )}
-
-      {answer && (
-        <Box
-          marginTop="2rem"
-          padding="1rem"
-          border="1px solid #ddd"
-          borderRadius="4px"
-        >
-          <Typography variant="h6" gutterBottom>
-            Answer:
-          </Typography>
-          <Typography variant="body1" color="textSecondary">
-            {answer}
-          </Typography>
-
-          {confidence !== null && (
-            <Typography
-              variant="body2"
-              color="textSecondary"
-              style={{ marginTop: '1rem' }}
-            >
-              Confidence: {Math.round(confidence * 100)}%
+    <ThemeProvider theme={theme}>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: '100vh', // full height of the viewport
+          
+          overflow: 'hidden',
+        }}
+      >
+        <Container maxWidth="md">
+          <Paper elevation={3} style={{ padding: '2rem', borderRadius: '8px' }}>
+            <Typography variant="h4" gutterBottom style={{ fontWeight: 600 }}>
+              Internal Q&A System
             </Typography>
-          )}
+            <Typography
+              variant="body1"
+              color="textSecondary"
+              style={{ marginBottom: '2rem' }}
+            >
+              Ask specific enterprise-related questions for improved accuracy. The
+              system refers to existing documents in the company database and works
+              best when precise details are included.
+            </Typography>
 
-          {sources && (
-            <>
-              <Typography
-                variant="body2"
-                color="textSecondary"
-                style={{ marginTop: '1rem' }}
+            <form onSubmit={handleSubmit}>
+              <TextField
+                label="Ask a Question"
+                variant="outlined"
+                fullWidth
+                value={question}
+                onChange={(e) => setQuestion(e.target.value)}
+                margin="normal"
+              />
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                fullWidth
+                disabled={loading}
+                style={{
+                  marginTop: '1rem',
+                  padding: '0.75rem',
+                  fontSize: '1rem',
+                  fontWeight: 600,
+                }}
               >
-                Source: {sources.join(', ')}
+                {loading ? <CircularProgress size={24} color="inherit" /> : 'Submit'}
+              </Button>
+            </form>
+
+            {error && (
+              <Typography
+                color="error"
+                variant="body2"
+                style={{ marginTop: '1.5rem', fontWeight: 500 }}
+              >
+                Error: {error}
               </Typography>
-            </>
-          )}
-        </Box>
-      )}
-    </Container>
+            )}
+
+            {answer && (
+              <Box
+                marginTop="2rem"
+                padding="1.5rem"
+                border="1px solid #ddd"
+                borderRadius="8px"
+                bgcolor="#f9f9f9"
+              >
+                <Typography
+                  variant="h6"
+                  gutterBottom
+                  style={{ fontWeight: 600, marginBottom: '1rem' }}
+                >
+                  Answer
+                </Typography>
+                <Typography variant="body1" style={{ marginBottom: '1rem' }}>
+                  {answer}
+                </Typography>
+
+                {confidence !== null && (
+                  <Typography
+                    variant="body2"
+                    color="textSecondary"
+                    style={{ marginBottom: '0.5rem' }}
+                  >
+                    Confidence: {Math.round(confidence * 100)}%
+                  </Typography>
+                )}
+
+                {sources && (
+                  <Typography
+                    variant="body2"
+                    color="textSecondary"
+                    style={{ marginTop: '0.5rem' }}
+                  >
+                    Source: {sources.join(', ')}
+                  </Typography>
+                )}
+              </Box>
+            )}
+          </Paper>
+        </Container>
+      </div>
+    </ThemeProvider>
   );
 };
 
