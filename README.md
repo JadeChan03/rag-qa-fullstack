@@ -1,5 +1,7 @@
 # RAG QA Fullstack
 
+A full-stack Question-Answering (QA) system that uses Retrieval-Augmented Generation (RAG) to provide accurate, contextually relevant answers from unstructured documents.
+
 ## Problem Interpretation
 
 Many organizations struggle to efficiently retrieve precise answers from large volumes of unstructured textual data. Traditional keyword-based search methods often return irrelevant results, requiring significant manual effort to sift through them. The goal of this Proof of Concept (PoC) is to develop a **Question-Answering (QA)** system that uses **Retrieval-Augmented Generation (RAG)** to provide accurate and contextually relevant answers by leveraging a combination of document embeddings and machine learning models.
@@ -15,14 +17,11 @@ This project implements a **Retrieval-Augmented Generation (RAG)** pipeline to a
 1. **Document Embedding and Retrieval**:
    - Documents are loaded from a directory and converted into vector embeddings using the `all-MiniLM-L6-v2` model from **Sentence Transformers**.
    - Cosine similarity is used to compare the query embedding with document embeddings, retrieving the most relevant documents.
-
 2. **Answer Generation**:
    - The top relevant documents are combined into a context, which is truncated to fit within a token limit.
    - The context and query are passed to the `google/flan-t5-large` model from **Hugging Face Transformers** to generate a detailed and contextually relevant answer.
-
 3. **Confidence and Source Tracking**:
    - The system calculates confidence scores based on cosine similarity and provides the sources of the retrieved documents alongside the generated answer.
-
 4. **Frontend-Backend Integration**:
    - A **FastAPI** backend handles document embedding, retrieval, and query processing.
    - A **React** frontend allows users to input questions and view answers in an intuitive interface.
@@ -39,7 +38,7 @@ This project implements a **Retrieval-Augmented Generation (RAG)** pipeline to a
 
 ---
 
-### Trade-offs
+### Trade-offs/Limitations
 
 - **Embedding Model Size**: The `all-MiniLM-L6-v2` model is lightweight and fast but may sacrifice some accuracy compared to larger embedding models.
 - **Answer Generation Quality**: The quality of the generated answers depends on the relevance of the retrieved documents and the capabilities of the `google/flan-t5-large` model.
@@ -54,12 +53,11 @@ This project implements a **Retrieval-Augmented Generation (RAG)** pipeline to a
 - **FastAPI**: For building a lightweight, high-performance backend API.
 - **Uvicorn**: ASGI server for running the FastAPI backend.
 - **Sentence Transformers**: For generating high-quality document embeddings.
-- **FAISS**: For efficient similarity search and clustering of embeddings.
 - **Hugging Face Transformers**: For leveraging the `google/flan-t5-large` model to generate answers.
-- **React (Vite)**: For building a fast and interactive frontend.
-- **Material-UI (MUI)**: For creating a consistent and responsive frontend design.
 - **Python**: Core programming language for backend development.
 - **Node.js**: For managing frontend dependencies and running the development server.
+- **React (Vite/TypeScript)**: For building a fast, interactive and type-safe frontend.
+- **Material-UI (MUI)**: For creating a consistent and responsive frontend design.
 - **npm**: For managing JavaScript packages and scripts.
 
 ---
@@ -88,7 +86,7 @@ This project implements a **Retrieval-Augmented Generation (RAG)** pipeline to a
    On Windows:
    ```bash
    python -m venv venv
-   .venv\Scripts\activate
+   .\venv\Scripts\activate
    ```
 
 3. **Install Dependencies**
@@ -97,20 +95,18 @@ This project implements a **Retrieval-Augmented Generation (RAG)** pipeline to a
    pip install -r requirements.txt
    ```
 
-4. **Select the Correct Python Interpreter in Visual Studio Code/your IDE** 
+4. **Select the Correct Python Interpreter in Visual Studio Code** 
    To avoid dependency import errors, ensure that VS Code is using the correct Python interpreter:
-
-   1. Navigate or ensure that you are in the `server` folder.
-   2. Press `Cmd+Shift+P` on macOS or `Ctrl+Shift+P` on Windows/Linux.
-   3. Search for and select **Python: Select Interpreter**.
-   4. Choose the interpreter located in the `venv` folder. For example, `server/venv/bin/python` or `server/venv/Scripts/python.exe`.
+   - Press `Cmd+Shift+P` on macOS or `Ctrl+Shift+P` on Windows/Linux.
+   - Search for and select **Python: Select Interpreter**.
+   - Choose the interpreter located in the `venv` folder. For example, `server/venv/bin/python` or `server/venv/Scripts/python.exe`.
 
 5. **Start the Backend Server**
    ```bash
    uvicorn app:app --reload
    ```
-
-- Access the backend at `http://127.0.0.1:8000` or `http://127.0.0.1:8000/docs`.
+   
+   Access the backend at `http://127.0.0.1:8000` or `http://127.0.0.1:8000/docs`.
 
 ### Frontend Setup
 
@@ -129,7 +125,7 @@ This project implements a **Retrieval-Augmented Generation (RAG)** pipeline to a
    npm run dev
    ```
 
-- Access the frontend at `http://localhost:5173`.
+   Access the frontend at `http://localhost:5173`.
 
 ---
 
@@ -147,34 +143,66 @@ This project implements a **Retrieval-Augmented Generation (RAG)** pipeline to a
 
 ---
 
-## Limitations & Next Steps
+### Alternate Usage with Only the Backend
 
-### Limitations
-1. **Scalability**:
-   - The current implementation uses in-memory storage for document embeddings, which may not scale for large datasets.
-   - Running the PoC on resource-constrained environments may lead to performance bottlenecks.
+1. **Start the Backend**:
+   - Run the backend server:
+     ```bash
+     uvicorn app:app --reload
+     ```
 
-2. **Document Types**:
-   - The PoC currently supports plain text documents. It does not process PDFs, Word files, or other formats.
+2. **Interact with the API**:
+   - **Using Swagger UI**:
+     - Open your browser and navigate to `http://127.0.0.1:8000/docs`.
+     - Use the interactive Swagger UI to test the `/query` endpoint by entering your query and viewing the response.
+   - **Using Postman or cURL**:
+     - Send a POST request to the `/query` endpoint.
+     - Example using `curl`:
+       ```bash
+       curl -X POST "http://127.0.0.1:8000/query" \
+       -H "Content-Type: application/json" \
+       -d '{"query": "What is the purpose of this project?"}'
+       ```
 
-3. **Answer Quality**:
-   - The quality of the generated answers depends on the relevance of the retrieved documents and the language model's capabilities.
+---
 
-4. **Optimization for Response Time**:
-   - Currently the system is operating at a relatively inefficient speed, possible due to LLM Response Time and pipeline inefficiency. 
+## Sample Questions to Ask the Q&A System 
+These questions are based on the sample client documents.
 
-### Next Steps
+Document: HR_Remote_Work_Policy.txt
+
+1. "Who is eligible for remote work under the updated policy?"
+2. "What are the standard work hours for remote employees, and are flexible arrangements allowed?"
+3. "What security measures must remote employees follow when accessing internal systems?"
+
+Document: Internal_Announcement_Q3Goals.txt
+
+1. "What are the key initiatives planned to enhance customer retention in Q3 2025?"
+2. "When is Project Phoenix (Customer Portal Upgrade) scheduled to launch?"
+3. "What is the deadline for completing mandatory cybersecurity training for all staff?"
+
+Document: Product_Spec.txt
+
+1. "What new features are introduced in Widget Alpha v2.1?"
+2. "What is the average processing latency and throughput capacity of Widget Alpha v2.1?"
+3. "What are the minimum system requirements to run Widget Alpha v2.1?"
+
+Document: Project_Summary.txt
+
+1. "What is the primary goal of Project Phoenix?"
+2. "When is the Project Phoenix go-live date scheduled?"
+3. "What are the identified risks that could impact the completion of Project Phoenix?"
+
+---
+
+## Future Improvements
 1. **Scalability**:
    - Implement a vector database like **Pinecone**, **Weaviate**, or **FAISS** for storing document embeddings.
-
 2. **Support for More Document Types**:
    - Add preprocessing pipelines to handle PDFs, Word documents, and other formats.
-
 3. **Improved Answer Generation**:
    - Fine-tune a language model for domain-specific queries to improve accuracy and relevance.
-
 4. **Authentication & Authorization**:
    - Add user authentication to restrict access and provide personalized results.
-
 5. **Improving Response Time**:
    - Utilize caching responses, further batching LLM requests, and asynchronous processing to improve pipeline efficiency.
