@@ -78,12 +78,12 @@ This project implements a **Retrieval-Augmented Generation (RAG)** pipeline to a
 
 3. **Create and Activate the Virtual Environment**    
    To isolate dependencies and avoid conflicts, create a virtual environment.
-   On macOS/Linux:
+   ***On macOS/Linux:***
    ```bash
    python3 -m venv venv
    source venv/bin/activate 
    ```
-   On Windows:
+   ***On Windows:***
    ```bash
    python -m venv venv
    .\venv\Scripts\activate
