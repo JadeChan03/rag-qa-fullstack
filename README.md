@@ -78,6 +78,7 @@ This project implements a **Retrieval-Augmented Generation (RAG)** pipeline to a
 
 3. **Create and Activate the Virtual Environment**    
    To isolate dependencies and avoid conflicts, create a virtual environment.
+   
    ***On macOS/Linux:***
    ```bash
    python3 -m venv venv
@@ -97,7 +98,7 @@ This project implements a **Retrieval-Augmented Generation (RAG)** pipeline to a
 
 4. **Select the Correct Python Interpreter in Visual Studio Code** 
    To avoid dependency import errors, ensure that VS Code is using the correct Python interpreter:
-   - Press `Cmd+Shift+P` on macOS or `Ctrl+Shift+P` on Windows/Linux.
+   - Press `Cmd+Shift+P` (macOS) or `Ctrl+Shift+P` (Windows/Linux).
    - Search for and select **Python: Select Interpreter**.
    - Choose the interpreter located in the `venv` folder. For example, `server/venv/bin/python` or `server/venv/Scripts/python.exe`.
 
