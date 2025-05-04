@@ -213,24 +213,24 @@ Document: Project_Summary.txt
 Some questions provide inaccurate or incomplete response due to wording. To improve accuracy, simplifying questions and/or rewording them into direct requests may help.
 
 - "Who is working on Project Phoenix?"
-Answer: John Smith * Tech Lead: Alice Green
+   - Answer: John Smith * Tech Lead: Alice Green
 - "Name everyone on Project Phoenix"
-Answer: "Jane Doe (VP, Customer Success) * Project Manager: John Smith * Tech Lead: Alice Green * Primary Users: Customer Support Team, End Customers"
+   - Answer: "Jane Doe (VP, Customer Success) * Project Manager: John Smith * Tech Lead: Alice Green * Primary Users: Customer Support Team, End Customers"
 
 - "What are the remote work policy?"
-Answer: All remote work must comply with the company's data security and confidentiality policies
+   - Answer: All remote work must comply with the company's data security and confidentiality policies
 - "Summarise the remote work policy"
-Answer: **1. Security:** All remote work must comply with the company's data security and confidentiality policies. Eligibility:** Full-time employees with manager approval and a role suitable for remote work are eligible. Communication:** Remote employees are expected to be reachable via company-approved communication channels (Slack, Email, Video Conferencing) during work hours.
+   - Answer: **1. Security:** All remote work must comply with the company's data security and confidentiality policies. Eligibility:** Full-time employees with manager approval and a role suitable for remote work are eligible. Communication:** Remote employees are expected to be reachable via company-approved communication channels (Slack, Email, Video Conferencing) during work hours.
 
 - "What is the deadline for completing mandatory cybersecurity training for all staff?"
-Answer: August 1, 2024 (Incorrect)
+   - Answer: August 1, 2024 (Incorrect)
 - "What is the deadline for completing cybersecurity training for all staff?"
-Answer: September 30th (Correct)
+   - Answer: September 30th (Correct)
 
 - "What are the key initiatives planned to enhance customer retention in Q3 2025?"
-Answer: Let's work together to make Q3 a successful quarter (Irrelevant)
+   - Answer: Let's work together to make Q3 a successful quarter (Irrelevant)
 - "How will customer retention be improved?"
-Answer: Reduce average support ticket resolution time by 15% (Better but still incomplete)
+   - Answer: Reduce average support ticket resolution time by 15% (Better but still incomplete)
 
 ---
 
