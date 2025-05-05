@@ -13,7 +13,7 @@ A full-stack Question-Answering (QA) system that uses Retrieval-Augmented Genera
 5. [Quickstart](#quickstart)
 6. [Setup Instructions](#setup-instructions)
 7. [Troubleshooting](#troubleshooting)
-8. [Sample Questions](#sample-questions-to-ask-the-qa-system)
+8. [Sample Questions](#questions-to-ask-the-qa-system)
 9. [Future Improvements](#future-improvements)
 
 ---
@@ -113,7 +113,9 @@ For users who want to get started quickly, follow these minimal steps:
    ```bash
    cd server
    pyenv install 3.10.0  # Only if not already installed
-   pyenv local 3.10.0
+   pyenv local 3.10.0 # ensures compatibility with dependencies
+   pyenv version # verify pyenv is the correct version
+   which python3 # verify pyenv is properly linked to python 3
    python3 -m venv venv
    source venv/bin/activate  # Use `venv\Scripts\activate` on Windows
    pip install -r requirements.txt
@@ -142,7 +144,7 @@ For a detailed setup, refer to the following section ([Setup Instructions](#setu
 
 ---
 
-## Setup Instructuions
+## Setup Instructions
 
 ### Clone the Repository
 
@@ -167,32 +169,44 @@ git clone https://github.com/JadeChan03/rag-qa-fullstack.git
    cd rag-qa-fullstack/server
    ```
 
-3. **Set the Python Version Using pyenv**  
-   <br>If you use `pyenv` to manage Python versions, you can set the local Python version for the project.
+3. **Setting up the Environment with `pyenv` and `python3`**  
+   <br>This section ensures that `pyenv` is installed and properly configured so that it is linked to `python3`.
 
    1. Install Python 3.10.0 (if not already installed):
 
-   ```bash
-   pyenv install 3.10.0
-   ```
+      ```bash
+      pyenv install 3.10.0
+      ```
 
-   2. In the [server](http://_vscodecontentref_/2) directory, set the local Python version:
+   2. In the `server` directory, set the local Python version:
 
       ```bash
       pyenv local 3.10.0
       ```
 
-   3. Verify the Python version:
+   3. Verify the Python version `pyenv` is using:
 
       ```bash
       pyenv version
       ```
 
-   Ensure the output matches the required version (e.g., `3.10.0`).
+      Ensure the output matches the required version (e.g., `3.10.0`).
 
-   **If you encounter SSL errors during Python installation via `pyenv`, follow the steps in the "Troubleshooting: SSL Certificate Errors with pyenv" section below.**
+   4. Verify the Python version `python3` is using:
+  
+      ```bash
+      which python3
+      python3 --version
+      ```
 
-4. **Create and Activate the Virtual Environment**
+      Now, `which python3` should point to a pyenv shim (e.g., ~/.pyenv/shims/python3), and the version should match the one set by pyenv.
+
+   **Troubleshooting Checkpoint**
+   - If you encounter a mismatch in versions between `pyenv` and `python3`, this issue likely arises because the Python version managed by pyenv (3.10.0) is not properly linked to the python3 command when creating the virtual environment. Refer to ([Troubleshooting: `pyenv` Configuration Errors](#pyenv-configuration-errors)).
+
+   - If you encounter SSL errors during Python installation via `pyenv`, follow the steps in the ([Troubleshooting: SSL Certificate Errors](#ssl-certificate-errors)).
+
+5. **Create and Activate the Virtual Environment**
    <br>To isolate dependencies and avoid conflicts, create a virtual environment.
 
    **_On macOS/Linux:_**
@@ -209,21 +223,21 @@ git clone https://github.com/JadeChan03/rag-qa-fullstack.git
    `\venv\Scripts\activate
    ```
 
-5. **Install Dependencies**
+6. **Install Dependencies**
    <br>Once the virtual environment is activated, install the required dependencies:
 
    ```bash
    pip install -r requirements.txt
    ```
 
-6. **Select the Correct Python Interpreter in Visual Studio Code**
+7. **Select the Correct Python Interpreter in Visual Studio Code**
    <br>To avoid dependency import errors, ensure that VS Code is using the correct Python interpreter:
 
    - Press `Cmd+Shift+P` (macOS) or `Ctrl+Shift+P` (Windows/Linux).
    - Search for and select **Python: Select Interpreter**.
    - Choose the interpreter located in the `venv` folder. For example, `server/venv/bin/python` or `server/venv/Scripts/python.exe`.
 
-7. **Start the Backend Server**
+8. **Start the Backend Server**
 
    ```bash
    uvicorn app:app --reload
@@ -256,6 +270,23 @@ git clone https://github.com/JadeChan03/rag-qa-fullstack.git
 ---
 
 ## Troubleshooting
+### `pyenv` Configuration Errors
+1. **Edit your Shell Configuration** (e.g., `~/.zshrc` or `~/.bashrc`)
+
+   ```bash
+   nano ~/.zshrc # use a text editor to open your shell
+   ```
+   
+2. **Add the Following to your Shell Configuration File**
+    
+   ```bash
+   export PATH="$(pyenv root)/shims:$PATH"
+   ```
+3. **Reload Shell Configuration**
+
+   ```bash
+   source ~/.zshrc
+   ```
 
 ### SSL Certificate Errors
 
