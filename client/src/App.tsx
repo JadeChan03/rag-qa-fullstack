@@ -74,7 +74,7 @@ const App: React.FC = () => {
           alignItems: 'center',
           justifyContent: 'center',
           minHeight: '100vh', // full height of the viewport
-          
+
           overflow: 'hidden',
         }}
       >
@@ -88,9 +88,9 @@ const App: React.FC = () => {
               color="textSecondary"
               style={{ marginBottom: '2rem' }}
             >
-              Ask specific enterprise-related questions for improved accuracy. The
-              system refers to existing documents in the company database and works
-              best when precise details are included.
+              Please ask only enterprise-related questions. Provide specific
+              details for optimal accuracy. Response times may be longer due to
+              this being a demo version.
             </Typography>
 
             <form onSubmit={handleSubmit}>
@@ -115,7 +115,11 @@ const App: React.FC = () => {
                   fontWeight: 600,
                 }}
               >
-                {loading ? <CircularProgress size={24} color="inherit" /> : 'Submit'}
+                {loading ? (
+                  <CircularProgress size={24} color="inherit" />
+                ) : (
+                  'Submit'
+                )}
               </Button>
             </form>
 

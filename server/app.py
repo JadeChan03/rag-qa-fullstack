@@ -27,10 +27,6 @@ class Question(BaseModel):
 # API endpoint: handles user questions and returns answer, source, and confidence score
 @app.post("/ask")
 async def ask_question(question: Question):
-    """
-    Handles user queries, retrieves the most relevant document,
-    and generates a conversational answer with source citation and confidence score.
-    """
     # use find_answer function to get the structured response
     result = find_answer(question.query, documents, doc_embeddings, top_n=2)
 

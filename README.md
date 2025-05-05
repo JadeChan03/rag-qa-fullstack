@@ -43,6 +43,19 @@ This project implements a **Retrieval-Augmented Generation (RAG)** pipeline to a
 4. **Frontend-Backend Integration**:
    - A **FastAPI** backend handles document embedding, retrieval, and query processing.
    - A **React** frontend allows users to input questions and view answers in an intuitive interface.
+   
+### RAG Pipeline Summary
+
+1. **Data Loading**: Prepare text documents for processing
+2. **Data Indexing***: Store document embeddings into a vector database (ie. FAISS or Pinecone) for efficient retrieval
+3. **Generate Embeddings**: Documents are converted into vector embeddings
+4. **Retrieve Relevant Information**: Retrieve the most relevant documents to provide context for the LLM based on the highest relevance scores, which are calculated by:
+   1. cosine similarity between query and embeddings 
+   2. keyword boost between query and keywords
+5. **Augment LLM Prompt**: prompt engineering techniques are utilized to effectively communicate with the LLM in order to generate an accurate answer
+6. **Update External Data***: Maintain current information for retrieval, asynchronously update the documents and update embedding representation of the documents
+
+*not implemented in this simplified version
 
 ---
 
