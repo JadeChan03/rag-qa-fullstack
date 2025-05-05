@@ -49,7 +49,7 @@ This project implements a **Retrieval-Augmented Generation (RAG)** pipeline to a
 ### Why This Approach?
 
 - **Semantic Understanding**: The system uses Sentence Transformers to retrieve documents based on semantic meaning, with a keyword boost for improved relevance.
-- **High-Quality Answer Generation**: The google/flan-t5-large model generates detailed and contextually relevant answers.
+- **High-Quality Answer Generation**: The `google/flan-t5-large` model generates detailed and contextually relevant answers.
 - **Explainability**: Sources of retrieved documents are provided to enhance transparency and trust.
 - **Modularity**: The architecture separates retrieval and generation, making it easy to upgrade components.
 - **Scalability**: Cosine similarity and embeddings enable efficient handling of diverse document types and queries.
@@ -67,9 +67,10 @@ This project implements a **Retrieval-Augmented Generation (RAG)** pipeline to a
 
 ---
 
-### Tools/Libraries:
+### Tools/Libraries
 
-**Backend**
+**Backend:**
+
 - **FastAPI**: For building a lightweight, high-performance backend API.
 - **Pydantic**: Used as part of FastAPI for data validation and serialization.
 - **Uvicorn**: ASGI server for running the FastAPI backend.
@@ -77,7 +78,8 @@ This project implements a **Retrieval-Augmented Generation (RAG)** pipeline to a
 - **Hugging Face Transformers**: For leveraging the `google/flan-t5-large` model to generate answers.
 - **Python**: Core programming language for backend development.
 
-**Frontend**
+**Frontend:**
+
 - **Node.js**: For managing frontend dependencies and running the development server.
 - **React (Vite/TypeScript)**: For building a fast, interactive and type-safe frontend.
 - **Material-UI (MUI)**: For creating a consistent and responsive frontend design.
@@ -111,9 +113,9 @@ For users who want to get started quickly, follow these minimal steps:
    ```bash
    cd server
    pyenv install 3.10.0  # Only if not already installed
-   pyenv local 3.10.0    # Set the local Python version for the project
+   pyenv local 3.10.0
    python3 -m venv venv
-   source venv/bin/activate       # Use `venv\Scripts\activate` on Windows
+   source venv/bin/activate  # Use `venv\Scripts\activate` on Windows
    pip install -r requirements.txt
    uvicorn app:app --reload
    ```
@@ -142,7 +144,7 @@ For a detailed setup, refer to the following section ([Setup Instructions](#setu
 
 ## Setup Instructuions
 
-### Clone the Repository\*\*
+### Clone the Repository
 
 ```bash
 git clone https://github.com/JadeChan03/rag-qa-fullstack.git
@@ -188,7 +190,7 @@ git clone https://github.com/JadeChan03/rag-qa-fullstack.git
 
    Ensure the output matches the required version (e.g., `3.10.0`).
 
-   **If you encounter SSL errors during Python installation via `pyenv`, follow the steps in the \***Troubleshooting: SSL Certificate Errors with pyenv**\* section below.**
+   **If you encounter SSL errors during Python installation via `pyenv`, follow the steps in the "Troubleshooting: SSL Certificate Errors with pyenv" section below.**
 
 4. **Create and Activate the Virtual Environment**
    <br>To isolate dependencies and avoid conflicts, create a virtual environment.
@@ -292,6 +294,7 @@ If you encounter SSL errors during Python installation via `pyenv`, follow these
 
 2. **Set Environment Variables**:
    <br>Configure the paths to the OpenSSL libraries in your environment variables:
+
    - Add the `bin` directory of OpenSSL (e.g., `C:\Program Files\OpenSSL-Win64\bin`) to your `PATH`.
    - Set the `INCLUDE` and `LIB` environment variables to point to the OpenSSL installation directories.
 
@@ -312,12 +315,14 @@ If you encounter SSL errors during Python installation via `pyenv`, follow these
    >>> print(ssl.OPENSSL_VERSION)
    ```
 
-### General Steps for All Platforms:
+### General Steps for All Platforms
 
-#### Ensure pyenv is Properly Set Up**:
+#### Ensure pyenv is Properly Set Up:
+
 - Make sure pyenv (or pyenv-win for Windows) is initialized in your shell configuration file (e.g., `.bashrc` or `.zshrc` for macOS/Linux, or `PowerShell` for Windows).
 
-#### Update Tools: 
+#### Update Tools:
+
 - Keep your tools up to date to avoid compatibility issues:
 
   ```bash
@@ -330,23 +335,26 @@ If you encounter SSL errors during Python installation via `pyenv`, follow these
   ```
 
 #### Managing Global Python Dependencies:
+
 - If global Python dependencies are causing conflicts or clutter, consider cleaning them up:
 
-   1.  View all globally installed Python dependencies:
+  1.  View all globally installed Python dependencies:
 
-   ```bash
-   pip list
-   ```
+  ```bash
+  pip list
+  ```
 
-   2.  Uninstall All Python Packages
+  2.  Uninstall All Python Packages
 
-   ```bash
-   pip freeze | xargs pip uninstall -y
-   ```
-   - WARNING: This will remove all global packages, which may affect other projects or system tools.
-   - These commands apply only to the ***current*** Python environment (global or virtual) and do not affect `pyenv`
+  ```bash
+  pip freeze | xargs pip uninstall -y
+  ```
 
-#### Recreate Virtual Environment**:
+  - WARNING: This will remove all global packages, which may affect other projects or system tools.
+  - These commands apply only to the **_current_** Python environment (global or virtual) and do not affect `pyenv`
+
+#### Recreate Virtual Environment:
+
 - Always create and activate a virtual environment for each project to isolate dependencies. If an existing virtual environment was created with a Python version lacking SSL support or compatible dependencies, delete and recreate it:
 
   ```bash
@@ -358,11 +366,11 @@ If you encounter SSL errors during Python installation via `pyenv`, follow these
 
 ---
 
-## Sample Questions to Ask the Q&A System
+## Questions to Ask the Q&A System
 
-<br>These questions are based on the sample client documents.
+### Working Questions Based on Sample Client Documents
 
-<br>Document: HR_Remote_Work_Policy.txt
+Document: HR_Remote_Work_Policy.txt
 
 1. "Who is eligible for remote work under the updated policy?"
 2. "What are the standard work hours for remote employees, and are flexible arrangements allowed?"
@@ -382,41 +390,46 @@ Document: Project_Summary.txt
 1. "What is the primary goal of Project Phoenix?"
 2. "What are the identified risks that could impact the completion of Project Phoenix?"
 
-**_Known Errors Due to Wording_**
-<br>Some questions provide inaccurate or incomplete response due to wording. To improve accuracy, simplifying questions and/or rewording them into direct requests may help.
+### Known Errors Due to Wording
+
+Some questions provide inaccurate or incomplete response due to wording. To improve accuracy, simplifying questions and/or rewording them into direct requests may help.
 
 - "Who is working on Project Phoenix?"
-  - Answer: John Smith \* Tech Lead: Alice Green
+  - Answer: John Smith \* Tech Lead: Alice Green (Incomplete)
 - "Name everyone on Project Phoenix"
 
-  - Answer: "Jane Doe (VP, Customer Success) _ Project Manager: John Smith _ Tech Lead: Alice Green \* Primary Users: Customer Support Team, End Customers"
+  - Answer: "Jane Doe (VP, Customer Success) _ Project Manager: John Smith _ Tech Lead: Alice Green \* Primary Users: Customer Support Team, End Customers" (Better)
 
-- "What are the remote work policy?"
-  - Answer: All remote work must comply with the company's data security and confidentiality policies
+- "What is the remote work policy?"
+  - Answer: All remote work must comply with the company's data security and confidentiality policies (Incomplete)
 - "Summarise the remote work policy"
 
-  - Answer: **1. Security:** All remote work must comply with the company's data security and confidentiality policies. Eligibility:** Full-time employees with manager approval and a role suitable for remote work are eligible. Communication:** Remote employees are expected to be reachable via company-approved communication channels (Slack, Email, Video Conferencing) during work hours.
+  - Answer: **1. Security:** All remote work must comply with the company's data security and confidentiality policies. Eligibility:** Full-time employees with manager approval and a role suitable for remote work are eligible. Communication:** Remote employees are expected to be reachable via company-approved communication channels (Slack, Email, Video Conferencing) during work hours. (Better)
 
 - "What is the deadline for completing mandatory cybersecurity training for all staff?"
   - Answer: August 1, 2024 (Incorrect)
 - "What is the deadline for completing cybersecurity training for all staff?"
 
-  - Answer: September 30th (Correct)
+  - Answer: September 30th (Correct but incomplete)
 
 - "What are the key initiatives planned to enhance customer retention in Q3 2025?"
   - Answer: Let's work together to make Q3 a successful quarter (Irrelevant)
 - "How will customer retention be improved?"
-  - Answer: Reduce average support ticket resolution time by 15% (Better but still incomplete)
+  - Answer: Reduce average support ticket resolution time by 15% (Better but incomplete)
 
 ---
 
-## Future Improvements (on RAG system)
+## Future Improvements
+
+Improvements are focused on the RAG system rather than the application as a whole, with enhancements focused on the development of the actual product rather than the PoC.
 
 1. **Scalability**:
-   - Implement a vector database like **Pinecone**, **Weaviate**, or **FAISS** for storing document embeddings.
+   - Implement a vector database like **Pinecone**, **Weaviate**, or **FAISS** to handle larger datasets and improve retrieval efficiency.
 2. **Support for More Document Types**:
-   - Add preprocessing pipelines to handle PDFs, Word documents, and other formats.
+   - Add preprocessing pipelines to handle formats like PDFs, Word documents, and spreadsheets.
 3. **Improved Answer Generation**:
-   - Fine-tune a language model for domain-specific queries to improve accuracy and relevance.
-4. **Improving Response Time**:
-   - Utilize caching responses, further batching LLM requests, and asynchronous processing to improve pipeline efficiency.
+   - Fine-tune the language model for domain-specific queries and improve context handling to reduce truncation issues.
+4. **Optimized Response Time**:
+   - Implement caching, asynchronous processing, and batching of LLM requests to reduce latency.
+5. **Embedding Model Upgrades**:
+   - Explore larger or more accurate embedding models to improve retrieval precision without compromising performance (a lightweight model was chosen largely due to the fact that this is a PoC).
