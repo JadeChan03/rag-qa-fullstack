@@ -7,14 +7,3 @@ transformers>=4.21.0,<5.0.0
 huggingface-hub==0.12.1
 uvicorn[standard]>=0.22.0,<1.0.0
 pydantic>=1.10.0,<2.0.0
-
-'''
-notes:
-- please ensure that Python 3.8 or higher is installed, the recommended version is 3.10
-- fastapi>=0.95.0,<1.0.0 is the latest version that is compatible with pydantic>=1.10.0,<2.0.0
-- sentence-transformers==2.2.2 is the stable version that is compatible with huggingface-hub==0.12.1
-- a newer version of sentence-transformers (4.1.0) is available, but it is not compatible with huggingface-hub==0.12.1
-- torch==2.7.0 is not compatible with sentence-transformers==2.2.2
-
-*updated: 2025-05-05
-'''
