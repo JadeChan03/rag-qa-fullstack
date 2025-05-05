@@ -25,31 +25,34 @@ def load_documents(directory):
 def embed_documents(documents):
     return {filename: model.encode(content, convert_to_tensor=True) for filename, content in documents.items()}
 
-# 4. RETRIEVE RELEVANT INFO: retrieve the most relevant documents to provide context for the LLM
+# 4. RETRIEVE RELEVANT INFO: retrieve the most relevant information to provide context for the LLM
 def find_answer(query, documents, doc_embeddings, top_n=3, max_tokens=450, similarity_threshold=0.3, keyword_boost=0.5):
+    # part one: retrieve documents based on their relevance scores
     # encode query and extract keywords
     query_embedding = model.encode(query, convert_to_tensor=True)
     keywords = set(word for word in query.lower().split() if word not in stop_words)
 
-    # compute document scores via cosine similarity and apply keyword boost
+    # compute *document* scores via cosine similarity and apply keyword boost
     scores = {
         filename: util.pytorch_cos_sim(query_embedding, embedding).item() +
                   (keyword_boost if any(keyword in documents[filename].lower() for keyword in keywords) else 0)
         for filename, embedding in doc_embeddings.items()
     }
 
-    # retrieve top n documents
+    # part two: retrieve top n documents
     top_matches = sorted(scores.items(), key=lambda item: item[1], reverse=True)[:top_n]
 
     if not top_matches or max(score for _, score in top_matches) < similarity_threshold:
         return {"answer": "No relevant information found.", "source": [], "confidence": 0.0}
-
-    # extract relevant sentences from top documents
+    
+    # retrieve senteces from top documents
     combined_context = ""
     current_length = 0
     for filename, _ in top_matches:
+        # split document into sentences (simple data segmentation)
         sentences = documents[filename].split('. ')
         sentence_scores = {
+            # compute *sentence* scores via cosine similarity and apply keyword boost
             sentence: util.pytorch_cos_sim(query_embedding, model.encode(sentence, convert_to_tensor=True)).item() +
                       (keyword_boost if any(keyword in sentence.lower() for keyword in keywords) else 0)
             for sentence in sentences

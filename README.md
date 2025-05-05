@@ -13,7 +13,7 @@ A full-stack Question-Answering (QA) system that uses Retrieval-Augmented Genera
 5. [Quickstart](#quickstart)
 6. [Setup Instructions](#setup-instructions)
 7. [Troubleshooting](#troubleshooting)
-8. [Sample Questions](#questions-to-ask-the-qa-system)
+8. [Questions to Ask the QA System](#questions-to-ask-the-qa-system)
 9. [Future Improvements](#future-improvements)
 
 ---
@@ -32,14 +32,17 @@ This project implements a **Retrieval-Augmented Generation (RAG)** pipeline to a
 
 1. **Document Embedding and Retrieval**:
    - Documents are loaded from a directory and converted into vector embeddings using the `all-MiniLM-L6-v2` model from **Sentence Transformers**.
-   - Cosine similarity is used to compare the query embedding with document embeddings, retrieving the most relevant documents.
-   - A keyword boost is applied to prioritize documents containing query-specific keywords.
 2. **Answer Generation**:
    - The top relevant documents are processed to extract the most relevant sentences, which are combined into a context.
    - The context is then truncated to fit within a token limit (`max_tokens`), ensuring compatibility with the language model.
    - The context and query are passed to the `google/flan-t5-large` model from **Hugging Face Transformers** to generate a detailed and contextually relevant answer.
 3. **Confidence and Source Tracking**:
-   - The system calculates confidence scores based on cosine similarity between the query and document embeddings, then provides the sources of the retrieved documents alongside the generated answer.
+   - Confidence scores for documents and sentences are computed through:
+      1. ***Cosine Similarity***: used to compare the query embedding with document embeddings, retrieving the most relevant documents.
+      2. ***Keyword Boost***: applied to prioritize documents containing query-specific keywords.
+   - ***Retrieve Relevant Documents***: extract the highest-scoring documents from the data
+   - ***Retrieve Relevant Sentences to Create the Context***: extract the highest-scoring sentences from top documents to create the context for the llm
+   - Document scores, document names (sources) and the generated answer are provided
 4. **Frontend-Backend Integration**:
    - A **FastAPI** backend handles document embedding, retrieval, and query processing.
    - A **React** frontend allows users to input questions and view answers in an intuitive interface.
@@ -49,9 +52,7 @@ This project implements a **Retrieval-Augmented Generation (RAG)** pipeline to a
 1. **Data Loading**: Prepare text documents for processing
 2. **Data Indexing***: Store document embeddings into a vector database (ie. FAISS or Pinecone) for efficient retrieval
 3. **Generate Embeddings**: Documents are converted into vector embeddings
-4. **Retrieve Relevant Information**: Retrieve the most relevant documents to provide context for the LLM based on the highest relevance scores, which are calculated by:
-   1. cosine similarity between query and embeddings 
-   2. keyword boost between query and keywords
+4. **Retrieve Relevant Information**: Retrieve top-scoring sources (relevant sentences are extracted from top-scoring documents) to provide context for the LLM
 5. **Augment LLM Prompt**: prompt engineering techniques are utilized to effectively communicate with the LLM in order to generate an accurate answer
 6. **Update External Data***: Maintain current information for retrieval, asynchronously update the documents and update embedding representation of the documents
 
@@ -61,11 +62,7 @@ This project implements a **Retrieval-Augmented Generation (RAG)** pipeline to a
 
 ### Why This Approach?
 
-- **Semantic Understanding**: The system uses Sentence Transformers to retrieve documents based on semantic meaning, with a keyword boost for improved relevance.
-- **High-Quality Answer Generation**: The `google/flan-t5-large` model generates detailed and contextually relevant answers.
-- **Explainability**: Sources of retrieved documents are provided to enhance transparency and trust.
-- **Modularity**: The architecture separates retrieval and generation, making it easy to upgrade components.
-- **Scalability**: Cosine similarity and embeddings enable efficient handling of diverse document types and queries.
+This approach combines semantic understanding (via Sentence Transformers), high-quality answer generation (using `google/flan-t5-large`), and modularity to ensure scalability and explainability. It efficiently handles diverse document types and queries while providing transparent results.
 
 ---
 
@@ -420,7 +417,7 @@ If you encounter SSL errors during Python installation via `pyenv`, follow these
 
 ---
 
-## Questions to Ask the Q&A System
+## Questions to Ask the QA System
 
 ### Working Questions Based on Sample Client Documents
 
