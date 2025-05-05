@@ -76,6 +76,7 @@ This project implements a **Retrieval-Augmented Generation (RAG)** pipeline to a
 - **Sentence Transformers**: For generating high-quality document embeddings.
 - **Hugging Face Transformers**: For leveraging the `google/flan-t5-large` model to generate answers.
 - **Python**: Core programming language for backend development.
+
 **Frontend**
 - **Node.js**: For managing frontend dependencies and running the development server.
 - **React (Vite/TypeScript)**: For building a fast, interactive and type-safe frontend.
