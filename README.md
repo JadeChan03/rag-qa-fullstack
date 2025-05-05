@@ -70,14 +70,13 @@ This project implements a **Retrieval-Augmented Generation (RAG)** pipeline to a
 ### Tools/Libraries:
 
 **Backend**
-
 - **FastAPI**: For building a lightweight, high-performance backend API.
 - **Pydantic**: Used as part of FastAPI for data validation and serialization.
 - **Uvicorn**: ASGI server for running the FastAPI backend.
 - **Sentence Transformers**: For generating high-quality document embeddings.
 - **Hugging Face Transformers**: For leveraging the `google/flan-t5-large` model to generate answers.
 - **Python**: Core programming language for backend development.
-  **Frontend**
+**Frontend**
 - **Node.js**: For managing frontend dependencies and running the development server.
 - **React (Vite/TypeScript)**: For building a fast, interactive and type-safe frontend.
 - **Material-UI (MUI)**: For creating a consistent and responsive frontend design.
@@ -110,6 +109,8 @@ For users who want to get started quickly, follow these minimal steps:
 
    ```bash
    cd server
+   pyenv install 3.10.0  # Only if not already installed
+   pyenv local 3.10.0    # Set the local Python version for the project
    python3 -m venv venv
    source venv/bin/activate       # Use `venv\Scripts\activate` on Windows
    pip install -r requirements.txt
@@ -164,7 +165,7 @@ git clone https://github.com/JadeChan03/rag-qa-fullstack.git
    ```
 
 3. **Set the Python Version Using pyenv**  
-   If you use `pyenv` to manage Python versions, you can set the local Python version for the project.
+   <br>If you use `pyenv` to manage Python versions, you can set the local Python version for the project.
 
    1. Install Python 3.10.0 (if not already installed):
 
@@ -179,6 +180,7 @@ git clone https://github.com/JadeChan03/rag-qa-fullstack.git
       ```
 
    3. Verify the Python version:
+
       ```bash
       pyenv version
       ```
@@ -188,7 +190,7 @@ git clone https://github.com/JadeChan03/rag-qa-fullstack.git
    **If you encounter SSL errors during Python installation via `pyenv`, follow the steps in the \***Troubleshooting: SSL Certificate Errors with pyenv**\* section below.**
 
 4. **Create and Activate the Virtual Environment**
-   To isolate dependencies and avoid conflicts, create a virtual environment.
+   <br>To isolate dependencies and avoid conflicts, create a virtual environment.
 
    **_On macOS/Linux:_**
 
@@ -205,14 +207,14 @@ git clone https://github.com/JadeChan03/rag-qa-fullstack.git
    ```
 
 5. **Install Dependencies**
-   Once the virtual environment is activated, install the required dependencies:
+   <br>Once the virtual environment is activated, install the required dependencies:
 
    ```bash
    pip install -r requirements.txt
    ```
 
 6. **Select the Correct Python Interpreter in Visual Studio Code**
-   To avoid dependency import errors, ensure that VS Code is using the correct Python interpreter:
+   <br>To avoid dependency import errors, ensure that VS Code is using the correct Python interpreter:
 
    - Press `Cmd+Shift+P` (macOS) or `Ctrl+Shift+P` (Windows/Linux).
    - Search for and select **Python: Select Interpreter**.
@@ -275,7 +277,7 @@ If you encounter SSL errors during Python installation via `pyenv`, follow these
    ```
 
 3. **Verify SSL Installation**:
-   Test that Python has SSL support by running:
+   <br>Test that Python has SSL support by running:
    ```bash
    python3
    >>> import ssl
@@ -285,16 +287,15 @@ If you encounter SSL errors during Python installation via `pyenv`, follow these
 #### For Windows:
 
 1. **Install SSL Dependencies**:
-   Download and install the necessary SSL libraries, such as OpenSSL, from [https://slproweb.com/products/Win32OpenSSL.html](https://slproweb.com/products/Win32OpenSSL.html). Ensure that the correct version for your system architecture (32-bit or 64-bit) is installed.
+   <br>Download and install the necessary SSL libraries, such as OpenSSL, from [https://slproweb.com/products/Win32OpenSSL.html](https://slproweb.com/products/Win32OpenSSL.html). Ensure that the correct version for your system architecture (32-bit or 64-bit) is installed.
 
 2. **Set Environment Variables**:
-   Configure the paths to the OpenSSL libraries in your environment variables:
-
+   <br>Configure the paths to the OpenSSL libraries in your environment variables:
    - Add the `bin` directory of OpenSSL (e.g., `C:\Program Files\OpenSSL-Win64\bin`) to your `PATH`.
    - Set the `INCLUDE` and `LIB` environment variables to point to the OpenSSL installation directories.
 
 3. **Reinstall Python with OpenSSL Support**:
-   Use the following commands to reinstall Python via `pyenv-win` with OpenSSL:
+   <br>Use the following commands to reinstall Python via `pyenv-win` with OpenSSL:
 
    ```bash
    set "PYTHON_CONFIGURE_OPTS=--with-openssl=C:\Program Files\OpenSSL-Win64"
@@ -302,19 +303,21 @@ If you encounter SSL errors during Python installation via `pyenv`, follow these
    ```
 
 4. **Verify SSL Installation**:
-   Test that Python has SSL support by running:
+   <br>Test that Python has SSL support by running:
+
    ```bash
    python
    >>> import ssl
    >>> print(ssl.OPENSSL_VERSION)
    ```
 
-#### General Steps for All Platforms:
+### General Steps for All Platforms:
 
-- **Ensure pyenv is properly set up**:
-  Make sure pyenv (or pyenv-win for Windows) is initialized in your shell configuration file (e.g., `.bashrc` or `.zshrc` for macOS/Linux, or `PowerShell` for Windows).
+#### Ensure pyenv is Properly Set Up**:
+- Make sure pyenv (or pyenv-win for Windows) is initialized in your shell configuration file (e.g., `.bashrc` or `.zshrc` for macOS/Linux, or `PowerShell` for Windows).
 
-- **Update Tools**:
+#### Update Tools: 
+- Keep your tools up to date to avoid compatibility issues:
 
   ```bash
   # macOS/Linux
@@ -325,8 +328,26 @@ If you encounter SSL errors during Python installation via `pyenv`, follow these
   pyenv update
   ```
 
-- **Recreate Virtual Environment**:
-  If an existing virtual environment was created with a Python version lacking SSL support, delete and recreate it:
+#### Managing Global Python Dependencies:
+- If global Python dependencies are causing conflicts or clutter, consider cleaning them up:
+
+   1.  View all globally installed Python dependencies:
+
+   ```bash
+   pip list
+   ```
+
+   2.  Uninstall All Python Packages
+
+   ```bash
+   pip freeze | xargs pip uninstall -y
+   ```
+   - WARNING: This will remove all global packages, which may affect other projects or system tools.
+   - These commands apply only to the ***current*** Python environment (global or virtual) and do not affect `pyenv`
+
+#### Recreate Virtual Environment**:
+- Always create and activate a virtual environment for each project to isolate dependencies. If an existing virtual environment was created with a Python version lacking SSL support or compatible dependencies, delete and recreate it:
+
   ```bash
   rm -rf venv
   python -m venv venv
@@ -338,9 +359,9 @@ If you encounter SSL errors during Python installation via `pyenv`, follow these
 
 ## Sample Questions to Ask the Q&A System
 
-These questions are based on the sample client documents.
+<br>These questions are based on the sample client documents.
 
-Document: HR_Remote_Work_Policy.txt
+<br>Document: HR_Remote_Work_Policy.txt
 
 1. "Who is eligible for remote work under the updated policy?"
 2. "What are the standard work hours for remote employees, and are flexible arrangements allowed?"
@@ -361,7 +382,7 @@ Document: Project_Summary.txt
 2. "What are the identified risks that could impact the completion of Project Phoenix?"
 
 **_Known Errors Due to Wording_**
-Some questions provide inaccurate or incomplete response due to wording. To improve accuracy, simplifying questions and/or rewording them into direct requests may help.
+<br>Some questions provide inaccurate or incomplete response due to wording. To improve accuracy, simplifying questions and/or rewording them into direct requests may help.
 
 - "Who is working on Project Phoenix?"
   - Answer: John Smith \* Tech Lead: Alice Green
