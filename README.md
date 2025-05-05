@@ -13,7 +13,7 @@ A full-stack Question-Answering (QA) system that uses Retrieval-Augmented Genera
 5. [Quickstart](#quickstart)
 6. [Setup Instructions](#setup-instructions)
 7. [Troubleshooting](#troubleshooting)
-8. [Questions to Ask the Q&A System](#questions-to-ask-the-qa-system)
+8. [Sample Questions](#questions-to-ask-the-qa-system)
 9. [Future Improvements](#future-improvements)
 
 ---
@@ -113,7 +113,8 @@ For users who want to get started quickly, follow these minimal steps:
    ```bash
    cd server
    pyenv install 3.10.0  # Only if not already installed
-   pyenv local 3.10.0
+   pyenv local 3.10.0 # ensures compatibility with dependencies
+   # note: refer to "Backend Setup: Environment Configurations" if version errors occur 
    python3 -m venv venv
    source venv/bin/activate  # Use `venv\Scripts\activate` on Windows
    pip install -r requirements.txt
@@ -167,8 +168,7 @@ git clone https://github.com/JadeChan03/rag-qa-fullstack.git
    cd rag-qa-fullstack/server
    ```
 
-3. **Set the Python Version Using pyenv**  
-   <br>If you use `pyenv` to manage Python versions, you can set the local Python version for the project.
+3. **Environment Configurations**  
 
    1. Install Python 3.10.0 (if not already installed):
 
@@ -190,9 +190,37 @@ git clone https://github.com/JadeChan03/rag-qa-fullstack.git
 
       Ensure the output matches the required version (e.g., `3.10.0`).
 
-   **If you encounter SSL errors during Python installation via `pyenv`, follow the steps in the "Troubleshooting: SSL Certificate Errors with pyenv" section below.**
+   4. Verify the Python version `python3` is using:
+  
+      ```bash
+      which python3 # expected to point to a pyenv shim
+      python3 --version # expected `Python 3.10.0`
+      ```
 
-4. **Create and Activate the Virtual Environment**
+      If `which python3` does not point to a pyenv shim (e.g., ~/.pyenv/shims/python3), continue with the following steps to correct this issue:
+
+   5. **Edit your Shell Configuration** (e.g., `~/.zshrc` or `~/.bashrc`)
+
+   ```bash
+   nano ~/.zshrc # use a text editor to open your shell
+   ```
+   
+   6. **Add the Following to your Shell Configuration File**
+    
+   ```bash
+   export PATH="$(pyenv root)/shims:$PATH"
+   ```
+   7. **Reload Shell Configuration**
+
+   ```bash
+   source ~/.zshrc
+   ```
+
+   **Additional Troubleshooting**
+
+   - If you encounter SSL errors during Python installation via `pyenv`, follow the steps in the ([Troubleshooting: SSL Certificate Errors](#ssl-certificate-errors)).
+
+5. **Create and Activate the Virtual Environment**
    <br>To isolate dependencies and avoid conflicts, create a virtual environment.
 
    **_On macOS/Linux:_**
@@ -257,6 +285,19 @@ git clone https://github.com/JadeChan03/rag-qa-fullstack.git
 
 ## Troubleshooting
 
+### Dependency-Environment Version Errors
+
+If you are installing `requirements.txt` and encounter an error like:
+
+   ```bash
+   ERROR: Could not find a version that satisfies the requirement torch<2.0.0,>=1.11.0 (from versions: 2.6.0, 2.7.0)
+   ```
+
+The error indicates that the specified version range for the dependency (in this case, torch >=1.11.0,<2.0.0) is not available for your current Python environment or platform. This could be due to two reasons:
+
+   1. The local environment was set (`pyenv local 3.10.0`) ***after*** the virtual environment was created. You must delete your virtual environment and create a new one in the correct environment. However, if Python 3.10.0 was set with `pyenv` ***prior*** to creating the virtual environment. The issue likely arised because
+   2. the Python version managed by `pyenv` (3.10.0) is not properly linked to the `python3` command when creating the virtual environment. Even though you set pyenv local 3.10.0, the python3 command might still point to a system-installed Python version (e.g., 3.13.0) instead of the pyenv-managed version. To fix this, refer to steps 5-7 in ([Environment Configuration](environment-configuation).
+
 ### SSL Certificate Errors
 
 If you encounter SSL errors during Python installation via `pyenv`, follow these steps **_prior_** to reactivating your python version (`pyenv local 3.10.0`) and virtual environment (`source venv/bin/activate`):
@@ -317,16 +358,9 @@ If you encounter SSL errors during Python installation via `pyenv`, follow these
 
 ### General Steps for All Platforms
 
-#### Activate/Reactivate Virtual Environment
+#### Ensure pyenv is Properly Set Up:
 
-- Always create and activate a virtual environment for each project to isolate dependencies. If an existing virtual environment was created with a Python version lacking SSL support or compatible dependencies, delete and recreate it:
-
-  ```bash
-  rm -rf venv
-  python -m venv venv
-  source venv/bin/activate   # Use `venv\Scripts\activate` on Windows
-  pip install -r requirements.txt
-  ```
+- Make sure pyenv (or pyenv-win for Windows) is initialized in your shell configuration file (e.g., `.bashrc` or `.zshrc` for macOS/Linux, or `PowerShell` for Windows).
 
 #### Update Tools:
 
@@ -359,6 +393,17 @@ If you encounter SSL errors during Python installation via `pyenv`, follow these
 
   - WARNING: This will remove all global packages, which may affect other projects or system tools.
   - These commands apply only to the **_current_** Python environment (global or virtual) and do not affect `pyenv`
+
+#### Recreate Virtual Environment:
+
+- Always create and activate a virtual environment for each project to isolate dependencies. If an existing virtual environment was created with a Python version lacking SSL support or compatible dependencies, delete and recreate it:
+
+  ```bash
+  rm -rf venv
+  python -m venv venv
+  source venv/bin/activate   # Use `venv\Scripts\activate` on Windows
+  pip install -r requirements.txt
+  ```
 
 ---
 
