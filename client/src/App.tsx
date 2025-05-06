@@ -90,7 +90,7 @@ const App: React.FC = () => {
             >
               Please ask only enterprise-related questions. Provide specific
               details for optimal accuracy. Response times may be longer due to
-              this being a demo version.
+              this being a demo version. If you encounter a fetch error, please try re-submitting your query.
             </Typography>
 
             <form onSubmit={handleSubmit}>
