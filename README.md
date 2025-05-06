@@ -48,31 +48,31 @@ This project implements a **Retrieval-Augmented Generation (RAG)** pipeline to a
    - The context and query are passed to the `google/flan-t5-large` model from **Hugging Face Transformers** to generate a detailed and contextually relevant answer.
 3. **Confidence and Source Tracking**:
    - Confidence scores for documents and sentences are computed through:
-     1. **_Cosine Similarity_**: used to compare the query embedding with document embeddings, retrieving the most relevant documents.
-     2. **_Keyword Boost_**: applied to prioritize documents containing query-specific keywords.
-   - **_Retrieve Relevant Documents_**: extract the highest-scoring documents from the data
-   - **_Retrieve Relevant Sentences to Create the Context_**: extract the highest-scoring sentences from top documents to create the context for the llm
+      1. ***Cosine Similarity***: used to compare the query embedding with document embeddings, retrieving the most relevant documents.
+      2. ***Keyword Boost***: applied to prioritize documents containing query-specific keywords.
+   - ***Retrieve Relevant Documents***: extract the highest-scoring documents from the data
+   - ***Retrieve Relevant Sentences to Create the Context***: extract the highest-scoring sentences from top documents to create the context for the llm
    - Document scores, document names (sources) and the generated answer are provided
 4. **Frontend-Backend Integration**:
    - A **FastAPI** backend handles document embedding, retrieval, and query processing.
    - A **React** frontend allows users to input questions and view answers in an intuitive interface.
-
+   
 ### RAG Pipeline Summary
 
 1. **Data Loading**: Prepare text documents for processing
-2. **Data Indexing\***: Store document embeddings into a vector database (ie. FAISS or Pinecone) for efficient retrieval
+2. **Data Indexing***: Store document embeddings into a vector database (ie. FAISS or Pinecone) for efficient retrieval
 3. **Generate Embeddings**: Documents are converted into vector embeddings
 4. **Retrieve Relevant Information**: Retrieve top-scoring sources (relevant sentences are extracted from top-scoring documents) to provide context for the LLM
 5. **Augment LLM Prompt**: prompt engineering techniques are utilized to effectively communicate with the LLM in order to generate an accurate answer
-6. **Update External Data\***: Maintain current information for retrieval, asynchronously update the documents and update embedding representation of the documents
+6. **Update External Data***: Maintain current information for retrieval, asynchronously update the documents and update embedding representation of the documents
 
-\*not implemented in this simplified version
+*not implemented in this simplified version
 
 ---
 
 ### Why This Approach?
 
-This approach leverages **_semantic understanding_** via Sentence Transformers and high-quality, **_hallucination-free_** answer generation using google/flan-t5-large. Its **_modular architecture_** prioritises scalability, while also ensuring **_transparent results_** by listing sources.
+This approach leverages ***semantic understanding*** via Sentence Transformers and high-quality, ***hallucination-free*** answer generation using google/flan-t5-large. Its ***modular architecture*** prioritises scalability, while also ensuring ***transparent results*** by listing sources.
 
 ---
 
@@ -134,7 +134,7 @@ For users who want to get started quickly, follow these minimal steps:
    cd server
    pyenv install 3.10.0  # Only if not already installed
    pyenv local 3.10.0 # ensures compatibility with dependencies
-   # note: refer to "Backend Setup: Environment Configurations" if version errors occur
+   # note: refer to "Backend Setup: Environment Configurations" if version errors occur 
    python3 -m venv venv
    source venv/bin/activate  # Use `venv\Scripts\activate` on Windows
    pip install -r requirements.txt
@@ -188,7 +188,7 @@ git clone https://github.com/JadeChan03/rag-qa-fullstack.git
    cd rag-qa-fullstack/server
    ```
 
-3. **Environment Configurations**
+3. **Environment Configurations**  
 
    1. Install Python 3.10.0 (if not already installed):
 
@@ -211,7 +211,7 @@ git clone https://github.com/JadeChan03/rag-qa-fullstack.git
       Ensure the output matches the required version (e.g., `3.10.0`).
 
    4. Verify the Python version `python3` is using:
-
+  
       ```bash
       which python3 # expected to point to a pyenv shim
       python3 --version # expected `Python 3.10.0`
@@ -224,13 +224,12 @@ git clone https://github.com/JadeChan03/rag-qa-fullstack.git
    ```bash
    nano ~/.zshrc # use a text editor to open your shell
    ```
-
+   
    6. **Add the Following to your Shell Configuration File**
-
+    
    ```bash
    export PATH="$(pyenv root)/shims:$PATH"
    ```
-
    7. **Reload Shell Configuration**
 
    ```bash
@@ -241,7 +240,7 @@ git clone https://github.com/JadeChan03/rag-qa-fullstack.git
 
    - If you encounter SSL errors during Python installation via `pyenv`, follow the steps in the ([Troubleshooting: SSL Certificate Errors](#ssl-certificate-errors)).
 
-4. **Create and Activate the Virtual Environment**
+5. **Create and Activate the Virtual Environment**
    <br>To isolate dependencies and avoid conflicts, create a virtual environment.
 
    **_On macOS/Linux:_**
@@ -258,21 +257,21 @@ git clone https://github.com/JadeChan03/rag-qa-fullstack.git
    `\venv\Scripts\activate
    ```
 
-5. **Install Dependencies**
+6. **Install Dependencies**
    <br>Once the virtual environment is activated, install the required dependencies:
 
    ```bash
    pip install -r requirements.txt
    ```
 
-6. **Select the Correct Python Interpreter in Visual Studio Code**
+7. **Select the Correct Python Interpreter in Visual Studio Code**
    <br>To avoid dependency import errors, ensure that VS Code is using the correct Python interpreter:
 
    - Press `Cmd+Shift+P` (macOS) or `Ctrl+Shift+P` (Windows/Linux).
    - Search for and select **Python: Select Interpreter**.
    - Choose the interpreter located in the `venv` folder. For example, `server/venv/bin/python` or `server/venv/Scripts/python.exe`.
 
-7. **Start the Backend Server**
+8. **Start the Backend Server**
 
    ```bash
    uvicorn app:app --reload
@@ -310,14 +309,14 @@ git clone https://github.com/JadeChan03/rag-qa-fullstack.git
 
 If you are installing `requirements.txt` and encounter an error like:
 
-```bash
-ERROR: Could not find a version that satisfies the requirement torch<2.0.0,>=1.11.0 (from versions: 2.6.0, 2.7.0)
-```
+   ```bash
+   ERROR: Could not find a version that satisfies the requirement torch<2.0.0,>=1.11.0 (from versions: 2.6.0, 2.7.0)
+   ```
 
 The error indicates that the specified version range for the dependency (in this case, torch >=1.11.0,<2.0.0) is not available for your current Python environment or platform. This could be due to two reasons:
 
-1.  The local environment was set (`pyenv local 3.10.0`) **_after_** the virtual environment was created. You must delete your virtual environment and create a new one in the correct environment. However, if Python 3.10.0 was set with `pyenv` **_prior_** to creating the virtual environment. The issue likely arised because
-2.  the Python version managed by `pyenv` (3.10.0) is not properly linked to the `python3` command when creating the virtual environment. Even though you set pyenv local 3.10.0, the python3 command might still point to a system-installed Python version (e.g., 3.13.0) instead of the pyenv-managed version. To fix this, refer to steps 5-7 in ([Environment Configuration](environment-configuation).
+   1. The local environment was set (`pyenv local 3.10.0`) ***after*** the virtual environment was created. You must delete your virtual environment and create a new one in the correct environment. However, if Python 3.10.0 was set with `pyenv` ***prior*** to creating the virtual environment. The issue likely arised because
+   2. the Python version managed by `pyenv` (3.10.0) is not properly linked to the `python3` command when creating the virtual environment. Even though you set pyenv local 3.10.0, the python3 command might still point to a system-installed Python version (e.g., 3.13.0) instead of the pyenv-managed version. To fix this, refer to steps 5-7 in ([Environment Configuration](environment-configuation).
 
 ### SSL Certificate Errors
 
@@ -457,29 +456,26 @@ Document: Project_Summary.txt
 Some questions provide inaccurate or incomplete response due to wording. To improve accuracy, simplifying questions and/or rewording them into direct requests may help.
 
 - "Who is working on Project Phoenix?"
-  - Answer: John Smith \* Tech Lead: Alice Green (Incomplete)
+   - Answer: John Smith \* Tech Lead: Alice Green (Incomplete)
 - "Name everyone on Project Phoenix?"
-  - Answer: Jane Doe (VP, Customer Success) (Incomplete)
-- "Name everyone on Project phoenix" **_('Phoenix' is lower case)_**
-
-  - Answer: "Jane Doe (VP, Customer Success) _ Project Manager: John Smith _ Tech Lead: Alice Green \* Primary Users: Customer Support Team, End Customers" (Better)
+   - Answer: Jane Doe (VP, Customer Success) (Incomplete)
+- "Name everyone on Project phoenix" ***('Phoenix' is lower case)***
+   - Answer: "Jane Doe (VP, Customer Success) _ Project Manager: John Smith _ Tech Lead: Alice Green \* Primary Users: Customer Support Team, End Customers" (Better)
 
 - "What is the remote work policy?"
-  - Answer: All remote work must comply with the company's data security and confidentiality policies (Incomplete)
+   - Answer: All remote work must comply with the company's data security and confidentiality policies (Incomplete)
 - "Summarise the remote work policy"
-
-  - Answer: **1. Security:** All remote work must comply with the company's data security and confidentiality policies. Eligibility:** Full-time employees with manager approval and a role suitable for remote work are eligible. Communication:** Remote employees are expected to be reachable via company-approved communication channels (Slack, Email, Video Conferencing) during work hours. (Better)
+   - Answer: **1. Security:** All remote work must comply with the company's data security and confidentiality policies. Eligibility:** Full-time employees with manager approval and a role suitable for remote work are eligible. Communication:** Remote employees are expected to be reachable via company-approved communication channels (Slack, Email, Video Conferencing) during work hours. (Better)
 
 - "What is the deadline for completing mandatory cybersecurity training for all staff?"
-  - Answer: August 1, 2024 (Incorrect)
+   - Answer: August 1, 2024 (Incorrect)
 - "What is the deadline for completing cybersecurity training for all staff?"
-
-  - Answer: September 30th (Correct but incomplete)
+   - Answer: September 30th (Correct but incomplete)
 
 - "What are the key initiatives planned to enhance customer retention in Q3 2025?"
-  - Answer: Let's work together to make Q3 a successful quarter (Irrelevant)
+   - Answer: Let's work together to make Q3 a successful quarter (Irrelevant)
 - "How will customer retention be improved?"
-  - Answer: Reduce average support ticket resolution time by 15% (Better but incomplete)
+   - Answer: Reduce average support ticket resolution time by 15% (Better but incomplete)
 
 ---
 
