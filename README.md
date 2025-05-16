@@ -48,11 +48,11 @@ This project implements a **Retrieval-Augmented Generation (RAG)** pipeline to a
    - The context and query are passed to the `google/flan-t5-large` model from **Hugging Face Transformers** to generate a detailed and contextually relevant answer.
 3. **Confidence and Source Tracking**:
    - Confidence scores for documents and sentences are computed through:
-      1. ***Cosine Similarity***: used to compare the query embedding with document embeddings, retrieving the most relevant documents.
+      1. ***Cosine Similarity***: used to compare the query embedding with document and sentence embeddings, ensures efficient and meaningful retrieval of information
       2. ***Keyword Boost***: applied to prioritize documents containing query-specific keywords.
    - ***Retrieve Relevant Documents***: extract the highest-scoring documents from the data
    - ***Retrieve Relevant Sentences to Create the Context***: extract the highest-scoring sentences from top documents to create the context for the llm
-   - Document scores, document names (sources) and the generated answer are provided
+   - Document scores, document names (sources) and the generated answer are provided as a result
 4. **Frontend-Backend Integration**:
    - A **FastAPI** backend handles document embedding, retrieval, and query processing.
    - A **React** frontend allows users to input questions and view answers in an intuitive interface.
@@ -63,7 +63,7 @@ This project implements a **Retrieval-Augmented Generation (RAG)** pipeline to a
 2. **Data Indexing***: Store document embeddings into a vector database (ie. FAISS or Pinecone) for efficient retrieval
 3. **Generate Embeddings**: Documents are converted into vector embeddings
 4. **Retrieve Relevant Information**: Retrieve top-scoring sources (relevant sentences are extracted from top-scoring documents) to provide context for the LLM
-5. **Augment LLM Prompt**: prompt engineering techniques are utilized to effectively communicate with the LLM in order to generate an accurate answer
+5. **Augment LLM Prompt**: Prompt engineering techniques are utilized to effectively communicate with the LLM in order to generate an accurate answer
 6. **Update External Data***: Maintain current information for retrieval, asynchronously update the documents and update embedding representation of the documents
 
 *not implemented in this simplified version
@@ -72,7 +72,7 @@ This project implements a **Retrieval-Augmented Generation (RAG)** pipeline to a
 
 ### Why This Approach?
 
-This approach leverages ***semantic understanding*** via Sentence Transformers and high-quality, ***hallucination-free*** answer generation using google/flan-t5-large. Its ***modular architecture*** prioritises scalability, while also ensuring ***transparent results*** by listing sources.
+This approach leverages ***semantic understanding*** via Sentence Transformers and high-quality, ***hallucination-free*** answer generation using Flan-T5, an open-source LLM published by Google. Its ***modular architecture*** prioritises scalability, while also ensuring ***transparent results*** by listing sources.
 
 ---
 
@@ -136,9 +136,9 @@ For users who want to get started quickly, follow these minimal steps:
    pyenv local 3.10.0 # ensures compatibility with dependencies
    # note: refer to "Backend Setup: Environment Configurations" if version errors occur 
    python3 -m venv venv
-   source venv/bin/activate  # Use `venv\Scripts\activate` on Windows
+   source venv/bin/activate  # use `venv\Scripts\activate` on Windows
    pip install -r requirements.txt
-   uvicorn app:app --reload
+   uvicorn app:app --reload # starts server
    ```
 
 3. **Start the Frontend**:
@@ -495,3 +495,7 @@ Improvements are focused on the RAG system rather than the application as a whol
    - Explore larger or more accurate embedding models to improve retrieval precision without compromising performance (a lightweight model was chosen largely due to the fact that this is a PoC).
 6. **Enhance Prompt Transparency**:
    - Explicitly provide the segment that prooves that generated answer, and a link to the full source document(s).
+7. **Leverage LangChain for Pipeline Simplification**:
+   - Integrate the LangChain framework to streamline the handling of document loading, embedding generation, vector database integration, and LLM interaction.
+   - Use LangChain's modular components to simplify the addition of new features, such as prompt templates, memory for chatbots, and tool chaining.
+   - This would reduce development overhead and improve maintainability as the system scales.

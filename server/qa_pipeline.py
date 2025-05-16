@@ -12,7 +12,7 @@ stop_words = set(stopwords.words('english'))
 model = SentenceTransformer('all-MiniLM-L6-v2')
 qa_model = pipeline("text2text-generation", model="google/flan-t5-large")
 
-# 1. DATA LOADING: Prepare text documents for processing
+# 1. DATA LOADING: prepare text documents for processing
 def load_documents(directory):
     return {
         filename: open(os.path.join(directory, filename), 'r', encoding='utf-8').read()
